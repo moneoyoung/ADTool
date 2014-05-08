@@ -8,19 +8,28 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 public class ADTool {
+	List<String> addressElement = null;
 	String srcFileName = ""; //default source file for AD input
 	String inputDelimiter =";"; // default input delimiter for input data file
 	static String addressInputFormatFile = "InputFormat.cfg";
 	
 	public ADTool () {
 		//Initialize AddressDoctor input format file
-		readAddressInputFormatFile();
+		addressElement = readAddressInputFormatFile();
 		//	check default file location
 		//Initialize Java environment
 		//	check location of Java
 		//Initialize AD environment
 	}
 	
+	public void printAddressElement () {
+		for (String element : addressElement) {
+			System.out.println(element);
+		}
+	}
+	/*
+	 * method to read input format file
+	 */
 	static List<String> readAddressInputFormatFile() {
 		String currentLine;
 		BufferedReader br = null;
