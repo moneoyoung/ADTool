@@ -16,7 +16,6 @@ public class ADTool {
 	
 	
 	public ADTool () {
-		String assignStr;
 		//Initialize AddressDoctor input format file
 		addressElement = readAddressInputFormatFile();
 		
@@ -64,7 +63,7 @@ public class ADTool {
 	}
 	
 	String makeAssignString() {
-		String fncSnippet = "m_oAO.setInputAddressElement(%agr%, addr[%num%]);";
+		String fncSnippet = "m_oAO.setInputAddressElement(%agr%, addr[%num%]);\n";
 		String str = "";
 		Integer i = new Integer(0);
 		
