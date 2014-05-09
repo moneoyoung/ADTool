@@ -6,6 +6,8 @@ public class ADToolTest {
 		// TODO Auto-generated method stub
 		ADTool at = new ADTool(); 
 		at.printAddressElement();
+		String str = at.makeAssignString();
+		System.out.println(str);
 	}
 
 }

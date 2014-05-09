@@ -11,11 +11,17 @@ public class ADTool {
 	List<String> addressElement = null;
 	String srcFileName = ""; //default source file for AD input
 	String inputDelimiter =";"; // default input delimiter for input data file
+	String addressTemplateFile = "ConsoleDemoJava.java";
 	static String addressInputFormatFile = "InputFormat.cfg";
 	
+	
 	public ADTool () {
+		String assignStr;
 		//Initialize AddressDoctor input format file
 		addressElement = readAddressInputFormatFile();
+		
+		//make address assign part
+		
 		//	check default file location
 		//Initialize Java environment
 		//	check location of Java
@@ -27,6 +33,8 @@ public class ADTool {
 			System.out.println(element);
 		}
 	}
+	
+	
 	/*
 	 * method to read input format file
 	 */
@@ -53,5 +61,20 @@ public class ADTool {
 		}
 		
 		return addressElement;
+	}
+	
+	String makeAssignString() {
+		String fncSnippet = "m_oAO.setInputAddressElement(%agr%, addr[%num%]);";
+		String str = "";
+		Integer i = new Integer(0);
+		
+		for (String strAddress : this.addressElement) {
+			String tempStr = null;
+			tempStr = fncSnippet.replace("%agr%", strAddress);
+			str += tempStr.replace("%num%", i.toString());
+			i++;
+		}
+		
+		return str;
 	}
 }
