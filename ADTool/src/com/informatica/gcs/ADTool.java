@@ -5,6 +5,8 @@ import java.io.File;
 import java.util.List;
 import java.nio.charset.*;
 import com.google.common.io.*;
+import java.util.HashMap;
+
 
 public class ADTool {
 	List<String> addressElement = null;
@@ -13,11 +15,22 @@ public class ADTool {
 	String inputDelimiter =";"; // default input delimiter for input data file
 	String addressTemplateFile = "ConsoleDemoJava.tmpl"; //Java template file before give address element
 	static String addressInputFormatFile = "InputFormat.cfg";
+	HashMap<String, Integer> addressKey;
+	HashMap<HashMap<String, Integer>, Integer> addressFormat;
 	
 	
 	public ADTool () {
 		//Initialize AddressDoctor input format file
 		addressElement = readAddressInputFormatFile();
+		
+		
+		//Initialize addressFormat key map
+		addressKey = new HashMap<String, Integer>();
+		
+		
+		
+		//Initialize addreeFormat map
+		addressFormat = new HashMap<HashMap<String, Integer>, Integer>();
 		
 		//make address assign part
 		
@@ -57,15 +70,12 @@ public class ADTool {
 	 * Generate a string which assigns Address Elements to Address Object, m_oAO here
 	 */
 	String makeAssignString() {
-		String fncSnippet = "m_oAO.setInputAddressElement(%agr%, addr[%num%]);\n";
-		String str = "";
-		Integer i = new Integer(0);
+		String[] addressArr;
+		String str = new String();
 		
 		for (String strAddress : this.addressElement) {
-			String tempStr = null;
-			tempStr = fncSnippet.replace("%agr%", strAddress);
-			str += tempStr.replace("%num%", i.toString());
-			i++;
+			addressArr = strAddress.split(",");
+			addressKey.put(addressArr[0], Integer.parseInt(addressArr[1]));
 		}
 		
 		return str;
