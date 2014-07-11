@@ -1,17 +1,17 @@
 package com.informatica.gcs;
 
 import java.lang.String;
+import java.io.File;
 import java.util.List;
-import java.util.ArrayList;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.nio.charset.*;
+import com.google.common.io.*;
 
 public class ADTool {
 	List<String> addressElement = null;
+	
 	String srcFileName = ""; //default source file for AD input
 	String inputDelimiter =";"; // default input delimiter for input data file
-	String addressTemplateFile = "ConsoleDemoJava.java";
+	String addressTemplateFile = "ConsoleDemoJava.tmpl"; //Java template file before give address element
 	static String addressInputFormatFile = "InputFormat.cfg";
 	
 	
@@ -20,6 +20,9 @@ public class ADTool {
 		addressElement = readAddressInputFormatFile();
 		
 		//make address assign part
+		
+		//ReadConsoleDemoJava
+		//Replace %AssignAddressInput%
 		
 		//	check default file location
 		//Initialize Java environment
@@ -37,31 +40,22 @@ public class ADTool {
 	/*
 	 * method to read input format file
 	 */
-	static List<String> readAddressInputFormatFile() {
-		String currentLine;
-		BufferedReader br = null;
-		List<String> addressElement = new ArrayList<String>();
-	 
+	public List<String> readAddressInputFormatFile() {
+		File f = new File(addressInputFormatFile);
+		Charset cs = Charset.forName("UTF-8");
+		
 		try {
-			FileReader inputConfigFile = new FileReader(addressInputFormatFile);
-			br = new BufferedReader(inputConfigFile);
-			
-			while ((currentLine = br.readLine()) != null) {
-				addressElement.add(currentLine);
-			}
+			addressElement = Files.asCharSource(f,  cs).readLines();
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				if (br != null)br.close();
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
 		}
 		
 		return addressElement;
 	}
 	
+	/*
+	 * Generate a string which assigns Address Elements to Address Object, m_oAO here
+	 */
 	String makeAssignString() {
 		String fncSnippet = "m_oAO.setInputAddressElement(%agr%, addr[%num%]);\n";
 		String str = "";
@@ -76,4 +70,10 @@ public class ADTool {
 		
 		return str;
 	}
+	
+	/*
+	 * Read Template file and replace %AssignAddressInput% with a string returned from makeAssignString method
+	 * And save the sting as a file named  
+	 */
+	
 }
